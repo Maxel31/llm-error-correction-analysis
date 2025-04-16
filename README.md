@@ -1,90 +1,61 @@
 # レイヤー削除分析ツール
 
-Llama 3モデルの各層を削除したときの性能変化を分析するためのツールです。
+Llama 3モデルの各層を削除または交換したときの性能変化を分析するためのツールです。モデルの各層の役割や重要性を理解するのに役立ちます。
 
-## 修正とリファクタリングについて
+## 概要
 
-元のノートブック実装にあった以下の問題を修正しました：
+このツールは以下の3つのステップで分析を行います：
 
-1. データを正しく参照できていない問題
-2. 一部ケースでPPLやエラー率がNaNになる問題
-3. コードの構造や可読性の改善
+1. **レイヤー操作と性能評価**: 各層の削除または隣接層の交換を行い、次単語予測性能を評価
+2. **品詞タグ分析**: レイヤー操作の影響を品詞タグごとに分析
+3. **モデル比較**: 複数モデルの分析結果を比較し、可視化
 
 ## ファイル構成
 
-- `src/layer_removal_analysis.py` - メインの実装（Pythonモジュールとして使用可能）
-- `src/test_layer_removal.py` - テスト用スクリプト
-- `src/notebook/layer_removal_analysis.ipynb` - 元のノートブック
-- `src/notebook/results/` - 結果出力ディレクトリ
+- `src/layer_analysis.py` - **Step1**: 隣接層の交換/層の除去による次単語予測性能の評価、jsonファイルへの結果保存 
+- `src/layer_ablation_analysis.py` - **Step2**: Step1で生成されたjsonファイルを分析し、品詞タグごとの性能変化を分析
+- `src/pos_tag_comparison.py` - **Step3**: 複数モデルの品詞タグ分析結果を比較するスクリプト、各モデルのPOS解析結果を1つのプロットに重ねて表示
 
 ## 使い方
 
-### コマンドラインからの実行
+### Step1: レイヤー操作と性能評価
 
 ```bash
-# 1. 既存の結果ファイルを分析する
-python src/test_layer_removal.py --mode result --result_path src/notebook/results/layer_removal_token_prediction_wiki-text-2_n1.json
-
-# 2. 単一テキストでの評価をテストする
-python src/test_layer_removal.py --mode text --text "The quick brown fox jumps over the lazy dog."
-
-# 3. メインスクリプトを実行してレイヤー削除分析を行う
-python src/layer_removal_analysis.py
+python src/layer_analysis.py --model_name meta-llama/Meta-Llama-3-8B \
+                            --dataset_type wiki-text-2 \
+                            --max_samples 1000 \
+                            --experiment removal \
+                            --output_dir results \
+                            --gpu_id 0
 ```
 
-### Pythonモジュールとして使用する
+オプション:
+- `--model_name`: 分析するモデル名
+- `--dataset_type`: 使用するデータセット（wiki-text-2, gpt2-output-dataset, wiki-text-103, bookcorpus）
+- `--max_samples`: 評価するサンプル数
+- `--experiment`: 実験タイプ（removal: 層削除, exchange: 層交換）
+- `--output_dir`: 結果を保存するディレクトリ
+- `--gpu_id`: 使用するGPUのID
 
-```python
-from layer_removal_analysis import (
-    setup_device, 
-    load_model_and_tokenizer, 
-    analyze_layer_removal,
-    visualize_layer_removal_results
-)
+### Step2: 品詞タグ分析
 
-# デバイス設定
-device = setup_device()
-
-# モデルとトークナイザーを読み込む
-model_name = 'meta-llama/Meta-Llama-3-8B'
-model, tokenizer = load_model_and_tokenizer(model_name, device)
-
-# 分析実行
-results = analyze_layer_removal(
-    model=model,
-    tokenizer=tokenizer,
-    max_samples=1,  # サンプル数
-    output_dir="results",
-    dataset_type="wiki-text-2"  # または "gpt2-output-dataset"
-)
-
-# 結果の可視化
-visualize_layer_removal_results(results, "wiki-text-2", 1, language="ja")
-visualize_layer_removal_results(results, "wiki-text-2", 1, language="en")
+```bash
+python src/layer_ablation_analysis.py --dataset_type wiki-text-2 \
+                                     --experiment removal \
+                                     --sample_size 1000 \
+                                     --model_name Meta-Llama-3-8B
 ```
 
-## 主な修正点
+### Step3: モデル比較
 
-1. トークナイザーの正しい渡し方を実装
-2. NaNやInfの値の適切な処理
-3. リストアクセス前のインデックスチェック
-4. エラーハンドリングの強化
-5. ロギング機能の追加
-6. 型ヒントと関数ドキュメントの追加
-7. 変数名とコードフローの改善
+```bash
+python src/pos_tag_comparison.py --json_files results/removal/meta_llama_Meta_Llama_3_8B_wiki-text-2_n1000/ppl.json \
+                                results/removal/meta_llama_Meta_Llama_3_8B_Instruct_wiki-text-2_n1000/ppl.json \
+                                --experiment removal \
+                                --output_dir figures/comparisons
+```
 
-## 要件
-
-- Python 3.8以上
-- PyTorch
-- Transformers
-- NumPy
-- Matplotlib
-- tqdm
-- datasets
-
-## 注意事項
-
-- GPUメモリを大量に使用します
-- モデル読み込みに時間がかかります
-- 大きなサンプル数での実行は長時間かかります
+オプション:
+- `--json_files`: 比較するモデルの分析結果JSONファイル（複数指定可能）
+- `--experiment`: 分析実験の種類 (removal または exchange)
+- `--output_dir`: 出力ディレクトリのパス
