@@ -12,16 +12,16 @@ LLMの各層を削除または交換したときの性能変化を分析する�
 
 ## ファイル構成
 
-- `src/layer_analysis.py` - **Step1**: 隣接層の交換/層の除去による次単語予測性能の評価、jsonファイルへの結果保存 
-- `src/layer_ablation_analysis.py` - **Step2**: Step1で生成されたjsonファイルを分析し、品詞タグごとの性能変化を分析
-- `src/pos_tag_comparison.py` - **Step3**: 複数モデルの品詞タグ分析結果を比較するスクリプト、各モデルのPOS解析結果を1つのプロットに重ねて表示
+- `src/experiments_layer_removal_and_exchange.py` - **Step1**: 隣接層の交換/層の除去による次単語予測性能の評価、jsonファイルへの結果保存 
+- `src/analysis_performance_by_pos_tag.py` - **Step2**: Step1で生成されたjsonファイルを分析し、品詞タグごとの性能変化を分析
+- `src/comparison_figures.py` - **Step3**: 複数モデルの品詞タグ分析結果を比較するスクリプト、各モデルのPOS解析結果を1つのプロットに重ねて表示
 
 ## 使い方
 
 ### Step1: レイヤー操作と性能評価
 
 ```bash
-python src/layer_analysis.py --model_name meta-llama/Meta-Llama-3-8B \
+python src/experiments_layer_removal_and_exchange.py --model_name meta-llama/Meta-Llama-3-8B \
                             --dataset_type wiki-text-2 \
                             --max_samples 1000 \
                             --experiment removal \
@@ -40,7 +40,7 @@ python src/layer_analysis.py --model_name meta-llama/Meta-Llama-3-8B \
 ### Step2: 品詞タグ分析
 
 ```bash
-python src/layer_ablation_analysis.py --dataset_type wiki-text-2 \
+python src/analysis_performance_by_pos_tag.py --dataset_type wiki-text-2 \
                                      --experiment removal \
                                      --sample_size 1000 \
                                      --model_name Meta-Llama-3-8B
@@ -49,7 +49,7 @@ python src/layer_ablation_analysis.py --dataset_type wiki-text-2 \
 ### Step3: モデル比較
 
 ```bash
-python src/pos_tag_comparison.py --json_files results/removal/meta_llama_Meta_Llama_3_8B_wiki-text-2_n1000/ppl.json \
+python src/comparison_figures.py --json_files results/removal/meta_llama_Meta_Llama_3_8B_wiki-text-2_n1000/ppl.json \
                                 results/removal/meta_llama_Meta_Llama_3_8B_Instruct_wiki-text-2_n1000/ppl.json \
                                 --experiment removal \
                                 --output_dir figures/comparisons
