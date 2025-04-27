@@ -13,4 +13,5 @@ wheels/
 data/
 src/notebook/
 src/results/
+results/
 legacy/

@@ -1408,8 +1408,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='レイヤー除去/交換分析スクリプト')
     
     parser.add_argument('--dataset', type=str, default='wiki-text-2',
-                        choices=['wiki-text-2', 'gpt2-output-dataset'],
-                        help='分析するデータセットの種類 (wiki-text-2 または gpt2-output-dataset)')
+                        choices=['wiki-text-2', 'gpt2-output-dataset', 'wiki-text-103'],
+                        help='分析するデータセットの種類 (wiki-text-2 または gpt2-output-dataset または wiki-text-103)')
     
     parser.add_argument('--experiment', type=str, default='removal',
                         choices=['removal', 'exchange'],

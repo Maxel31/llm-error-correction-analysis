@@ -1,8 +1,18 @@
-# 隣接層の入れ替え/層の削除による次単語予測性能の変化の分析
+# LLM層操作による次単語予測性能変化の分析
 
-LLMの各層を削除または交換したときの性能変化を分析するためのツール(For EACL2025)
+大規模言語モデル（LLM）の内部表現と性能の関係を理解するための研究プロジェクト。このリポジトリでは、LLMの各層を削除または交換したときの次単語予測性能の変化を分析するためのツールとコードを提供しています。
 
-## 概要
+## 研究の背景と目的
+
+大規模言語モデルの内部表現がどのように構成されているかを理解することは、モデルの動作原理を解明し、より効率的で解釈可能なモデルの開発につながります。本研究では特に：
+
+- 各層の削除または隣接層の交換が次単語予測性能に与える影響
+- 品詞タグごとの性能変化の分析
+- 複数のモデルアーキテクチャ間での比較
+
+を通じて、LLMの内部表現の特性を明らかにすることを目指しています。
+
+## 機能と分析ステップ
 
 このツールは以下の3つのステップで分析を行います：
 
@@ -17,6 +27,18 @@ LLMの各層を削除または交換したときの性能変化を分析する�
 - `src/comparison_figures.py` - **Step3**: 複数モデルの品詞タグ分析結果を比較するスクリプト、各モデルのPOS解析結果を1つのプロットに重ねて表示
 
 ## 使い方
+
+### 環境構築
+
+```bash
+# 仮想環境の作成と依存関係のインストール
+python -m venv .venv
+source .venv/bin/activate  # Linuxの場合
+# または
+.venv\Scripts\activate  # Windowsの場合
+
+pip install -r requirements.txt
+```
 
 ### Step1: レイヤー操作と性能評価
 
@@ -55,7 +77,37 @@ python src/comparison_figures.py --json_files results/removal/meta_llama_Meta_Ll
                                 --output_dir figures/comparisons
 ```
 
-オプション:
-- `--json_files`: 比較するモデルの分析結果JSONファイル（複数指定可能）
-- `--experiment`: 分析実験の種類 (removal または exchange)
-- `--output_dir`: 出力ディレクトリのパス
+## 実験結果の例
+
+各実験によって生成される結果は、指定した出力ディレクトリに保存されます。主な出力ファイルは以下の通りです：
+
+- 層操作実験の結果JSONファイル（例: `results/removal/meta_llama_Meta_Llama_3_8B_wiki-text-2_n1000/ppl.json`）
+- 品詞タグ分析の結果と図表
+- モデル比較グラフ
+
+## 対応モデル
+
+このツールは以下のモデルに対応しています：
+- Meta-Llama-3シリーズ
+- LLaMA 2シリーズ
+- Mistral
+- Mixtral
+- 他のTransformersライブラリでサポートされているデコーダーモデル
+
+## ライセンス
+
+このプロジェクトは[MITライセンス](LICENSE)の下で公開されています。
+
+## 引用
+
+このプロジェクトを研究で使用される場合は、以下の形式で引用してください：
+
+```
+@misc{LLMLayerAnalysis2025,
+  author = {Authors},
+  title = {Characterization of the Availability of Layer Exchange in Large Language Models},
+  year = {2025},
+  publisher = {GitHub},
+  url = {https://github.com/yourusername/characterization-of-the-avalilablity-of-layer-exchange}
+}
+```
