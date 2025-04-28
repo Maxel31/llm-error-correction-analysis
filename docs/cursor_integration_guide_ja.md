@@ -8,7 +8,7 @@
 
 1. [GitHub](https://github.com/)にログインします
 2. 右上の「+」ボタンをクリックし、「New repository」を選択します
-3. リポジトリ名を「llm-layer-exchange-analysis」と入力します
+3. リポジトリ名を「llm-error-correction-analysis」と入力します
 4. 説明（Description）に「Investigating error correction in language models by analyzing activation differences」と入力します
 5. リポジトリを「Public」に設定します
 6. 「Create repository」ボタンをクリックします
@@ -31,7 +31,7 @@ git add .
 git commit -m "Initial commit"
 
 # リモートリポジトリを追加
-git remote add origin https://github.com/Maxel31/llm-layer-exchange-analysis.git
+git remote add origin https://github.com/Maxel31/llm-error-correction-analysis.git
 
 # メインブランチをプッシュ
 git push -u origin main
@@ -49,7 +49,7 @@ git push -u origin main
 1. Cursorを起動します
 2. 左側のサイドバーで「Source Control」アイコン（分岐アイコン）をクリックします
 3. 「Clone Repository」ボタンをクリックします
-4. 「https://github.com/Maxel31/llm-layer-exchange-analysis.git」と入力します
+4. 「https://github.com/Maxel31/llm-error-correction-analysis.git」と入力します
 5. リポジトリを保存する場所を選択します
 6. 「Clone」ボタンをクリックします
 
@@ -68,8 +68,8 @@ Llama-3-7Bのような大規模言語モデルを実行するには、十分なG
 4. GitHubからリポジトリをクローンします：
 
 ```python
-!git clone https://github.com/Maxel31/llm-layer-exchange-analysis.git
-%cd llm-layer-exchange-analysis
+!git clone https://github.com/Maxel31/llm-error-correction-analysis.git
+%cd llm-error-correction-analysis
 !pip install -r requirements.txt
 ```
 
@@ -96,15 +96,15 @@ ssh username@your-gpu-server.com
 2. リポジトリをクローンします：
 
 ```bash
-git clone https://github.com/Maxel31/llm-layer-exchange-analysis.git
-cd llm-layer-exchange-analysis
+git clone https://github.com/Maxel31/llm-error-correction-analysis.git
+cd llm-error-correction-analysis
 pip install -r requirements.txt
 ```
 
 3. CursorからSSH経由でリモートサーバーに接続します：
    - Cursorを起動します
    - 「File」→「Open Remote Repository」を選択します
-   - SSHの接続情報を入力します（例：`username@your-gpu-server.com:/path/to/llm-layer-exchange-analysis`）
+   - SSHの接続情報を入力します（例：`username@your-gpu-server.com:/path/to/llm-error-correction-analysis`）
 
 ### 3.3 Hugging Faceインフェレンスエンドポイントの利用
 
