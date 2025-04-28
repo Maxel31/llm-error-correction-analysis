@@ -14,59 +14,40 @@
 
 ### 前提条件
 
+- Linux環境（GPUセットアップ済み）
 - Python 3.8以上
-- pip（Pythonパッケージマネージャー）
 - Git
-- GPUを搭載したマシン（Llama-3-7Bモデルを実行するため）または十分なRAM
+- rye（Pythonパッケージマネージャー）
 
 ### 基本的なセットアップ
 
+このプロジェクトでは、ryeを使用してPythonモジュールのインストールを行います。
+
 ```bash
 # リポジトリをクローン
 git clone https://github.com/Maxel31/llm-layer-exchange-analysis.git
 cd llm-layer-exchange-analysis
 
-# 仮想環境を作成
-python -m venv venv
-source venv/bin/activate  # Windowsの場合: venv\Scripts\activate
-
-# 依存関係をインストール
-pip install -r requirements.txt
+# ryeを使用して依存関係をインストール
+rye sync
 ```
 
-### 詳細なセットアップ手順
+### GPUセットアップ
 
-#### 1. 何もない環境からのセットアップ（Ubuntu/Debian）
+このプロジェクトでは、以下のコードを使用してGPUデバイスを設定します：
 
-```bash
-# 必要なパッケージをインストール
-sudo apt update
-sudo apt install -y python3 python3-pip python3-venv git
-
-# リポジトリをクローン
-git clone https://github.com/Maxel31/llm-layer-exchange-analysis.git
-cd llm-layer-exchange-analysis
-
-# 仮想環境を作成
-python3 -m venv venv
-source venv/bin/activate
-
-# 依存関係をインストール
-pip install --upgrade pip
-pip install -r requirements.txt
+```python
+def setup_device(gpu_id: str = "0") -> torch.device:
+    """GPUが利用可能かどうかを確認し、適切なデバイスを返す"""
+    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+    os.environ["CUDA_VISIBLE_DEVICES"] = gpu_id
+    
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    logger.info(f"使用デバイス: {device} (GPU ID: {gpu_id})")
+    return device
 ```
 
-#### 2. GPUセットアップ（NVIDIA GPU）
-
-```bash
-# CUDAドライバーとツールキットをインストール
-sudo apt install -y nvidia-driver-XXX cuda-toolkit-XX.X
-
-# PyTorchをGPUサポート付きでインストール
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-```
-
-詳細なGPUセットアップとCursorとの連携については、[GPU設定とCursor連携ガイド](docs/cursor_integration_guide_ja.md)を参照してください。
+Cursorとの連携については、[Cursor連携ガイド](docs/cursor_integration_guide_ja.md)を参照してください。
 
 ## 使用方法
 
