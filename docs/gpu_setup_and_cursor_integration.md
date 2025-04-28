@@ -12,7 +12,11 @@ Llama-3-7Bのような大規模言語モデルを実行するには、十分なG
 
 ```bash
 # 必要なパッケージのインストール
-pip install -r requirements.txt
+# ryeをインストール（まだインストールされていない場合）
+curl -sSf https://rye-up.com/get | bash
+source "$HOME/.rye/env"
+# 依存関係をインストール
+rye sync
 
 # CUDAがインストールされていることを確認
 python -c "import torch; print(torch.cuda.is_available())"
@@ -27,9 +31,11 @@ Google Colabを使用する場合：
 3. 以下のコードを実行してリポジトリをクローンします：
 
 ```python
-!git clone https://github.com/yourusername/llm-error-correction.git
-%cd llm-error-correction
-!pip install -r requirements.txt
+!git clone https://github.com/yourusername/llm-error-correction-analysis.git
+%cd llm-error-correction-analysis
+!curl -sSf https://rye-up.com/get | bash
+!source "$HOME/.rye/env"
+!rye sync
 ```
 
 4. GPUランタイムを有効にします（「ランタイム」→「ランタイムのタイプを変更」→「ハードウェアアクセラレータ」→「GPU」）
@@ -43,11 +49,15 @@ SSH経由でリモートGPUサーバーに接続する場合：
 ssh username@your-gpu-server.com
 
 # リポジトリをクローン
-git clone https://github.com/yourusername/llm-error-correction.git
-cd llm-error-correction
+git clone https://github.com/yourusername/llm-error-correction-analysis.git
+cd llm-error-correction-analysis
 
 # 環境のセットアップ
-pip install -r requirements.txt
+# ryeをインストール（まだインストールされていない場合）
+curl -sSf https://rye-up.com/get | bash
+source "$HOME/.rye/env"
+# 依存関係をインストール
+rye sync
 ```
 
 ## 2. Cursorエディタとの連携

@@ -1,7 +1,7 @@
 [project]
-name = "characterization-of-the-avalilablity-of-layer-exchange"
+name = "llm-error-correction-analysis"
 version = "0.1.0"
-description = "Add your description here"
+description = "1つのトークンだけ異なる文ペアの活性化差分を分析するツール"
 authors = [
     { name = "Maxel31", email = "sorutongeniune.31@gmail.com" }
 ]
@@ -43,4 +43,4 @@ dev-dependencies = []
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/characterization_of_the_avalilablity_of_layer_exchange"]
+packages = ["src/llm_error_correction_analysis"]

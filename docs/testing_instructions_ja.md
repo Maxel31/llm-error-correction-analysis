@@ -19,7 +19,11 @@
 ```bash
 git clone https://github.com/Maxel31/llm-error-correction-analysis.git
 cd llm-error-correction-analysis
-pip install -r requirements.txt
+# ryeをインストール（まだインストールされていない場合）
+curl -sSf https://rye-up.com/get | bash
+source "$HOME/.rye/env"
+# 依存関係をインストール
+rye sync
 ```
 
 2. OpenAI APIキーを設定します：

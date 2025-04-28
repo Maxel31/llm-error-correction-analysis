@@ -70,7 +70,9 @@ Llama-3-7Bのような大規模言語モデルを実行するには、十分なG
 ```python
 !git clone https://github.com/Maxel31/llm-error-correction-analysis.git
 %cd llm-error-correction-analysis
-!pip install -r requirements.txt
+!curl -sSf https://rye-up.com/get | bash
+!source "$HOME/.rye/env"
+!rye sync
 ```
 
 5. 必要なコードを実行します：
@@ -98,7 +100,11 @@ ssh username@your-gpu-server.com
 ```bash
 git clone https://github.com/Maxel31/llm-error-correction-analysis.git
 cd llm-error-correction-analysis
-pip install -r requirements.txt
+# ryeをインストール（まだインストールされていない場合）
+curl -sSf https://rye-up.com/get | bash
+source "$HOME/.rye/env"
+# 依存関係をインストール
+rye sync
 ```
 
 3. CursorからSSH経由でリモートサーバーに接続します：
