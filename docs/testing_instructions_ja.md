@@ -17,8 +17,8 @@
 1. リポジトリをクローンし、必要なパッケージをインストールします：
 
 ```bash
-git clone https://github.com/Maxel31/llm-layer-exchange-analysis.git
-cd llm-layer-exchange-analysis
+git clone https://github.com/Maxel31/llm-error-correction-analysis.git
+cd llm-error-correction-analysis
 pip install -r requirements.txt
 ```
 
