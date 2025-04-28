@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Error Correction - Activation Visualization</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .plot-container {
+            height: 600px;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .loading-spinner {
+            width: 3rem;
+            height: 3rem;
+        }
+        #plotTitle {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center">LLM Error Correction - Activation Visualization</h1>
+        
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">データ選択</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="resultFile">結果ファイル:</label>
+                            <select id="resultFile" class="form-select">
+                                <option value="">ファイルを選択してください</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="loading">
+                    <div class="spinner-border loading-spinner text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>データを読み込んでいます...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="controlPanel" class="card" style="display: none;">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">可視化設定</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="layerSelect">レイヤー選択:</label>
+                            <select id="layerSelect" class="form-select">
+                                <option value="">レイヤーを選択してください</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>文タイプ選択:</label>
+                            <div id="sentenceTypeCheckboxes" class="mt-2">
+                                <!-- Checkboxes will be added here dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="pairSelect">文ペア選択:</label>
+                            <select id="pairSelect" class="form-select">
+                                <option value="">文ペアを選択してください</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="sortOrder">次元の並び順:</label>
+                            <select id="sortOrder" class="form-select">
+                                <option value="index">インデックス順</option>
+                                <option value="ascending">活性化差分 (昇順)</option>
+                                <option value="descending">活性化差分 (降順)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h3 id="plotTitle" style="display: none;">レイヤー別活性化差分</h3>
+        
+        <div id="plotContainer" class="plot-container" style="display: none;"></div>
+        
+        <div id="sentencePairInfo" class="card mt-4" style="display: none;">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">文ペア情報</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>文1:</label>
+                            <p id="sentence1" class="form-control-plaintext"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>文2:</label>
+                            <p id="sentence2" class="form-control-plaintext"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/visualization.js"></script>
+</body>
+</html>
